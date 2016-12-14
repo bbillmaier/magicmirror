@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,500,700');
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  color: #fff;
+  background: #000;
+  font-family: 'Roboto', sans-serif;
+}
+main {
+  padding: 40px 80px;
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+.container {
+  text-align: center;
+}
+.subtitle {
+  color: gray;
+}
+section.top {
+  height: 200px;
+  width: 100%;
+  display: block;
+}
+section.top inner {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+* {
+  max-width: 100%;
+}
+.env-label {
+  float: left;
+  opacity: 0.4;
+  position: absolute;
+  left: 10px;
+  top: 0px;
+  font-size: 7px;
+}
+.clock-cont {
+  float: right;
+  font-size: 115px;
+  text-align: center;
+  width: 100%;
+}
+strong#env-name {
+  font-weight: 100;
+}
+section.right {
+  height: 100%;
+  width: 390px;
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 50px;
+  box-sizing: border-box;
+  text-align: center;
+}
+section.right inner {
+  position: relative;
+  display: block;
+  width: 100%;
+}
