@@ -30,6 +30,7 @@ $( document ).ready(function() {
     // http://openweathermap.org/current
     getForecast('Detroit');
     getCurrentWeather('Pittsburgh');
+    getTrafficData();
    
  
 });
@@ -74,3 +75,38 @@ function getCurrentWeather(city){
       document.getElementById('temp').innerHTML = msg.main.temp;
     });
 }
+
+var trafficAPIKey = "qZNBAv9T6YRwxGYOIaX8MrG6poPRsuTI";
+var homeAddress = "228+Ashland+Avenue+Pittsburgh+PA";
+var workAddress = "235+Fort+Pitt+Boulevard+Pittsburgh+PA";
+
+function getTrafficData() {
+  var trafficInfo = 'https://www.mapquestapi.com/directions/v2/route?key=' + trafficAPIKey + '&from=' + homeAddress + '&to=' + workAddress + '&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false';
+  var request = $.ajax({
+    url: trafficInfo,
+    method: "POST",
+    dataType: "JSON"
+  });
+
+  request.done(function( msg ) {
+    console.log( msg );
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
