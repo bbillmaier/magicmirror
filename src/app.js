@@ -29,7 +29,9 @@ $( document ).ready(function() {
     // Example Call api.openweathermap.org/data/2.5/forecast?q=Pittsburgh,us&mode=xml&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9
     // http://openweathermap.org/current
     getForecast('Detroit');
-    getCurrentWeather('Pittsburgh');
+    getCurrentWeather('Pittsburgh', 'imperial');
+
+    document.getElementById('date').innerHTML = theDate();
    
  
 });
@@ -47,8 +49,8 @@ function checkTime(i) {
     return i;
 }
 
-function getForecast(city){
-    var weatherForecast = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us&units=imperial&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
+function getForecast(city, units){
+    var weatherForecast = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us&units='+units+'&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
      var request = $.ajax({
       url: weatherForecast,
       method: "POST",
@@ -60,8 +62,17 @@ function getForecast(city){
     });
 }
 
-function getCurrentWeather(city){
-    var weatherForecast = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + ',us&units=imperial&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
+function getCurrentWeather(city, units){
+    var unit;
+    switch(units){
+    	case 'metric':
+    		unit = 'C';
+    	break;
+    	case 'imperial':
+    		unit = 'F';
+    	break;
+    }
+    var weatherForecast = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + ',us&units='+units+'&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
      var request = $.ajax({
       url: weatherForecast,
       method: "POST",
@@ -70,7 +81,27 @@ function getCurrentWeather(city){
      
     request.done(function( msg ) {
       console.log( msg );
+      console.log(msg.weather[0].id)
       //alert(msg.main.temp);
-      document.getElementById('temp').innerHTML = msg.main.temp;
+      document.getElementById('temp').innerHTML = Math.floor(msg.main.temp) + '&deg;';
+      document.getElementById('weather-icon').innerHTML = '<i class="wi wi-owm-' + msg.weather[0].id + '"></i>';
     });
+}
+
+function theDate(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	if(dd<10) {
+	    dd='0'+dd
+	} 
+
+	if(mm<10) {
+	    mm='0'+mm
+	} 
+
+	today = mm+'/'+dd+'/'+yyyy;
+	return today;
 }

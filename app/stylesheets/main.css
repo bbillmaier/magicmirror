@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,500,700');
+@import 'weather-icons.css';
 html,
 body {
   width: 100%;
@@ -54,8 +55,7 @@ section.top inner {
   font-size: 7px;
 }
 .clock-cont {
-  float: right;
-  font-size: 115px;
+  font-size: 75px;
   text-align: center;
   width: 100%;
 }
@@ -77,4 +77,45 @@ section.right inner {
   position: relative;
   display: block;
   width: 100%;
+}
+/* Weather */
+table.current-weather-table {
+  font-size: 45px;
+  width: 100%;
+  border: 5px solid #fff;
+  border-collapse: collapse;
+}
+.temperature {
+  margin-top: -15px;
+}
+.current-weather-table td {
+  position: relative;
+  text-align: center;
+  border: 5px solid #fff;
+  border-collapse: collapse;
+}
+.weather .top > div#weather-icon {
+  margin-right: 5px;
+  display: inline-block;
+}
+.weather .top > div {
+  display: inline-block;
+  font-size: 35px;
+  vertical-align: middle;
+  margin: 0px;
+}
+.weather .top {
+  position: relative;
+  display: block;
+  vertical-align: middle;
+  margin-top: 25px;
+  height: auto;
+}
+.weather {
+  display: block;
+}
+/* Date */
+.date-cont {
+  font-size: 22px;
+  margin-top: 25px;
 }
