@@ -30,7 +30,7 @@ $( document ).ready(function() {
     // http://openweathermap.org/current
     getForecast('Detroit');
     getCurrentWeather('Pittsburgh');
-    getTrafficData();
+    getTraffic();
    
  
 });
@@ -76,21 +76,27 @@ function getCurrentWeather(city){
     });
 }
 
-var trafficAPIKey = "qZNBAv9T6YRwxGYOIaX8MrG6poPRsuTI";
-var homeAddress = "228+Ashland+Avenue+Pittsburgh+PA";
-var workAddress = "235+Fort+Pitt+Boulevard+Pittsburgh+PA";
+var googleAPIKey = 'AIzaSyCBEKrd0BHOUMmH05UBgID6EUjSXUGsAbQ';
+var homeAddress = '228+Ashland+Avenue+Pittsburgh';
+var workAddress = '235+Fort+Pitt+Blvd+Pittsburgh';
 
-function getTrafficData() {
-  var trafficInfo = 'https://www.mapquestapi.com/directions/v2/route?key=' + trafficAPIKey + '&from=' + homeAddress + '&to=' + workAddress + '&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false';
-  var request = $.ajax({
-    url: trafficInfo,
-    method: "POST",
-    dataType: "JSON"
-  });
+var workingExample = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=228+Ashland+Avenue+Pittsburgh&destinations=235+fort+pitt+blvd+pittsburgh&key=AIzaSyCBEKrd0BHOUMmH05UBgID6EUjSXUGsAbQ';
 
-  request.done(function( msg ) {
-    console.log( msg );
-  });
+
+function getTraffic() {
+
+    var trafficData = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+ homeAddress + '&destinations='+ workAddress + '&key=' + googleAPIKey;
+     var request = $.ajax({
+      url: trafficData,
+      method: "POST",
+      dataType: "JSON"
+    });
+
+
+    request.done(function( msg ) {
+      document.getElementById('travel-time').innerHTML = 'Current travel time: ' + msg.rows[0].elements[0].duration.text;
+    });
+
 }
 
 
