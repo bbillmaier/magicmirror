@@ -34,9 +34,16 @@ $( document ).ready(function() {
     // Weather API key aa14eefdadb34bb7a3e2600bfdcb7af9
     // Example Call api.openweathermap.org/data/2.5/forecast?q=Pittsburgh,us&mode=xml&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9
     // http://openweathermap.org/current
+
+    var googleAPIKey = 'AIzaSyCBEKrd0BHOUMmH05UBgID6EUjSXUGsAbQ';
+    var startLocation = '233 N Craig Street Pittsburgh';
+    var destination = '235 Fort Pitt Blvd Pittsburgh';
+
     getForecast('Detroit');
-    getCurrentWeather('Pittsburgh');
-    getTraffic();
+    getTraffic(startLocation, destination, googleAPIKey, false, 0, 9);
+    getCurrentWeather('Pittsburgh', 'imperial');
+
+    document.getElementById('date').innerHTML = theDate();
    
  
 });
@@ -54,8 +61,8 @@ function checkTime(i) {
     return i;
 }
 
-function getForecast(city){
-    var weatherForecast = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us&units=imperial&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
+function getForecast(city, units){
+    var weatherForecast = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us&units='+units+'&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
      var request = $.ajax({
       url: weatherForecast,
       method: "POST",
@@ -67,8 +74,17 @@ function getForecast(city){
     });
 }
 
-function getCurrentWeather(city){
-    var weatherForecast = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + ',us&units=imperial&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
+function getCurrentWeather(city, units){
+    var unit;
+    switch(units){
+    	case 'metric':
+    		unit = 'C';
+    	break;
+    	case 'imperial':
+    		unit = 'F';
+    	break;
+    }
+    var weatherForecast = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + ',us&units='+units+'&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
      var request = $.ajax({
       url: weatherForecast,
       method: "POST",
@@ -77,18 +93,46 @@ function getCurrentWeather(city){
      
     request.done(function( msg ) {
       console.log( msg );
+      console.log(msg.weather[0].id);
       //alert(msg.main.temp);
-      document.getElementById('temp').innerHTML = msg.main.temp;
+      document.getElementById('temp').innerHTML = Math.floor(msg.main.temp) + '&deg;';
+      document.getElementById('weather-icon').innerHTML = '<i class="wi wi-owm-' + msg.weather[0].id + '"></i>';
     });
 }
 
-var googleAPIKey = 'AIzaSyCBEKrd0BHOUMmH05UBgID6EUjSXUGsAbQ';
-var homeAddress = '228+Ashland+Avenue+Pittsburgh';
-var workAddress = '235+Fort+Pitt+Blvd+Pittsburgh';
 
-function getTraffic() {
 
-    var trafficData = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+ homeAddress + '&destinations='+ workAddress + '&key=' + googleAPIKey;
+function getTraffic(currentLocation, destination, googleAPIKey, message, startTime, endTime) {
+    
+    //Checking if this info is time related. For example if this is being used to get travel time to work in the morning.
+    if(!startTime){
+      startTime = 0;
+    }else{
+      startTime = startTime;
+    }
+
+    if(!endTime){
+      endTime = 23;
+    }else{
+      endTime = endTime;
+    }
+
+    var currentHour = (new Date()).getHours();
+    if (currentHour >= startTime && currentHour <= endTime){
+
+    if(!message){
+      message = 'Current travel time: ';
+    }else{
+      message = message;
+    }
+
+    //Adding + signs to location data. This will make it easier to put the address in initially.
+    
+    currentLocation = currentLocation.replace(" ", "+");
+    destination = destination.replace(" ", "+");
+
+
+    var trafficData = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+ currentLocation + '&destinations='+ destination + '&key=' + googleAPIKey;
      var request = $.ajax({
       url: trafficData,
       method: "POST",
@@ -97,9 +141,31 @@ function getTraffic() {
 
 
     request.done(function( msg ) {
-      document.getElementById('travel-time').innerHTML = 'Current travel time: ' + msg.rows[0].elements[0].duration.text;
+      document.getElementById('travel-time').innerHTML = message + msg.rows[0].elements[0].duration.text;
     });
 
+  }else{
+    console.log('travel time from ' + currentLocation + ' to ' + destination + 'is not currently active');
+  }
+
+}
+
+function theDate(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	if(dd<10) {
+	    dd='0'+dd;
+	} 
+
+	if(mm<10) {
+	    mm='0'+mm;
+	} 
+
+	today = mm+'/'+dd+'/'+yyyy;
+	return today;
 }
 
 }());
