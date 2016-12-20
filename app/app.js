@@ -45,10 +45,10 @@ $( document ).ready(function() {
 
 
     var googleAPIKey = 'AIzaSyAhCLSHKTqG9rN9TWyK7RJopJoAQRO7yH0';
-    var startLocation = '233 N Craig Street Pittsburgh';
-    var destination = '235 Fort Pitt Blvd Pittsburgh';
+    var startLocation = '235 Fort Pitt Blvd Pittsburgh';
+    var destination = '233 N Craig Street Pittsburgh';
 
-    getTraffic(startLocation, destination, googleAPIKey, false, 8, 10);
+    getTraffic(startLocation, destination, googleAPIKey, false, 12, 23);
     setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 8, 10); }, 6000);
     
     getCurrentWeather('Pittsburgh', 'imperial');
