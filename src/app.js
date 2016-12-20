@@ -29,19 +29,35 @@ $( document ).ready(function() {
     // Example Call api.openweathermap.org/data/2.5/forecast?q=Pittsburgh,us&mode=xml&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9
     // http://openweathermap.org/current
 
+
+    setInterval(function(){ 
+      getCurrentWeather('Pittsburgh', 'imperial'); 
+      console.log('weather updated');
+    }, 600000);
+    
+
+
     var googleAPIKey = 'AIzaSyAhCLSHKTqG9rN9TWyK7RJopJoAQRO7yH0';
     var startLocation = '233 N Craig Street Pittsburgh';
     var destination = '235 Fort Pitt Blvd Pittsburgh';
 
-    getForecast('Detroit');
+    getTraffic(startLocation, destination, googleAPIKey, false, 8, 10);
+    setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 8, 10); }, 6000);
     
-    getTraffic(startLocation, destination, googleAPIKey, false, 0, 9);
-
-    setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 0, 9); }, 60000);
     getCurrentWeather('Pittsburgh', 'imperial');
+    setInterval(function(){ 
+      getCurrentWeather('Pittsburgh', 'imperial'); 
+      //console.log('weather updated');
+    }, 600000);
+
 
     document.getElementById('date').innerHTML = theDate();
-   
+    setInterval(function(){ 
+      document.getElementById('date').innerHTML = theDate();
+      //console.log('date updated');
+    }, 1000);
+    
+    getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
  
 });
 
@@ -148,7 +164,7 @@ function getTraffic(currentLocation, destination, googleAPIKey, message, startTi
 
 
   }else{
-    console.log('travel time from ' + currentLocation + ' to ' + destination + 'is not currently active');
+    //console.log('travel time from ' + currentLocation + ' to ' + destination + 'is not currently active');
   }
 
 }
@@ -169,4 +185,26 @@ function theDate(){
 
 	today = mm+'/'+dd+'/'+yyyy;
 	return today;
+}
+
+function getNewsFeed(source, APIkey){
+  var newsQuery = 'https://newsapi.org/v1/articles?source=' + source + '&apiKey=' + APIkey;
+  var newsRequest = $.ajax({
+      url: newsQuery,
+      method: "GET",
+    });
+
+
+    newsRequest.done(function( msg ) {
+      console.log('News: ');
+      console.log(msg);
+
+      var i = 0;
+      msg.articles.forEach(function(){
+        var thisArticle = msg.articles[i];
+        $("#news-container").append('<div class="news-single"> <h2 class="headline">' + thisArticle.title + '</h2> <div class="by-line"><span class="source">' + source + '</span> - <span class="author">' + thisArticle.author + '</span></div> </div>');
+        console.log(thisArticle.title);
+        i++;
+      });
+    });
 }
