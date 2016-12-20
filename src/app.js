@@ -29,12 +29,15 @@ $( document ).ready(function() {
     // Example Call api.openweathermap.org/data/2.5/forecast?q=Pittsburgh,us&mode=xml&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9
     // http://openweathermap.org/current
 
-    var googleAPIKey = 'AIzaSyCBEKrd0BHOUMmH05UBgID6EUjSXUGsAbQ';
+    var googleAPIKey = 'AIzaSyAhCLSHKTqG9rN9TWyK7RJopJoAQRO7yH0';
     var startLocation = '233 N Craig Street Pittsburgh';
     var destination = '235 Fort Pitt Blvd Pittsburgh';
 
     getForecast('Detroit');
+    
     getTraffic(startLocation, destination, googleAPIKey, false, 0, 9);
+
+    setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 0, 9); }, 60000);
     getCurrentWeather('Pittsburgh', 'imperial');
 
     document.getElementById('date').innerHTML = theDate();
@@ -139,7 +142,10 @@ function getTraffic(currentLocation, destination, googleAPIKey, message, startTi
 
     request.done(function( msg ) {
       document.getElementById('travel-time').innerHTML = message + msg.rows[0].elements[0].duration.text;
+      
+      console.log('travel time updated');
     });
+
 
   }else{
     console.log('travel time from ' + currentLocation + ' to ' + destination + 'is not currently active');
