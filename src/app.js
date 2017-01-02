@@ -41,8 +41,8 @@ $( document ).ready(function() {
     var startLocation = '233 N Craig Street Pittsburgh';
     var destination = '235 Fort Pitt Blvd Pittsburgh';
 
-    getTraffic(startLocation, destination, googleAPIKey, false, 8, 10);
-    setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 8, 10); }, 6000);
+    getTraffic(startLocation, destination, googleAPIKey, false, 0, 23);
+    setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 0, 23); }, 6000);
     
     getCurrentWeather('Pittsburgh', 'imperial');
     setInterval(function(){ 
@@ -57,8 +57,10 @@ $( document ).ready(function() {
       //console.log('date updated');
     }, 1000);
     
-    getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
- 
+    //getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
+    
+    getRedditFeed('news', 'hot', 5);
+    setInterval(function(){ getRedditFeed('news', 'hot', 5); }, 60000);
 });
 
 function startTime() {
@@ -206,5 +208,44 @@ function getNewsFeed(source, APIkey){
         console.log(thisArticle.title);
         i++;
       });
+    });
+}
+
+function getRedditFeed(subreddit, sort, count){
+  $('#subreddit').html('');
+  $('#subreddit').append(subreddit);
+  if(sort){
+    //Do Nothing
+  }else{
+    sort = 'hot';
+  }
+  
+  if(count){
+    //Do Nothing
+  }else{
+    count = 20;
+  }
+  console.log('Reddit Count is ' + count);
+  var redditQuery = 'https://www.reddit.com/r/' + subreddit + '/' + sort + '/.json?count=' + count;
+  console.log(redditQuery);
+  var redditRequest = $.ajax({
+      url: redditQuery,
+      method: "GET",
+    });
+  
+    redditRequest.done(function( msg ) {
+      $("#reddit-container").html('');
+      console.log('Reddit: ');
+      //console.log(msg.data.children);
+      var r = 0;
+      
+      while(r < count){
+        console.log(msg.data.children[r]);
+        var thisPost = msg.data.children[r].data;
+
+        $("#reddit-container").append('<div class="reddit-single"><div class="title">' + thisPost.title + '</div><div class="domain">' + thisPost.domain + '</div><div class="author">u/' + thisPost.author + '</div></div>');        
+        r++;
+      }
+
     });
 }
