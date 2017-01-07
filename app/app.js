@@ -51,9 +51,9 @@ $( document ).ready(function() {
     getTraffic(startLocation, destination, googleAPIKey, false, 0, 23);
     setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 0, 23); }, 6000);
     
-    getCurrentWeather('Pittsburgh', 'imperial');
+    getCurrentWeather('Ewa Beach', 'imperial');
     setInterval(function(){ 
-      getCurrentWeather('Pittsburgh', 'imperial'); 
+      getCurrentWeather('Ewa Beach', 'imperial'); 
       //console.log('weather updated');
     }, 600000);
 
@@ -64,10 +64,10 @@ $( document ).ready(function() {
       //console.log('date updated');
     }, 1000);
     
-    //getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
+    getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
     
-    getRedditFeed('news', 'hot', 5);
-    setInterval(function(){ getRedditFeed('news', 'hot', 5); }, 60000);
+    getRedditFeed('worldnews', 'hot', 5);
+    setInterval(function(){ getRedditFeed('worldnews', 'hot', 5); }, 60000);
 });
 
 function startTime() {
@@ -178,6 +178,28 @@ function theDate(){
 
 	today = mm+'/'+dd+'/'+yyyy;
 	return today;
+}
+
+function getNewsFeed(source, APIkey){
+  var newsQuery = 'https://newsapi.org/v1/articles?source=' + source + '&apiKey=' + APIkey;
+  var newsRequest = $.ajax({
+      url: newsQuery,
+      method: "GET",
+    });
+
+
+    newsRequest.done(function( msg ) {
+      console.log('News: ');
+      console.log(msg);
+
+      var i = 0;
+      msg.articles.forEach(function(){
+        var thisArticle = msg.articles[i];
+        $("#news-container").append('<div class="news-single"> <h2 class="headline">' + thisArticle.title + '</h2> <div class="by-line"><span class="source">' + source + '</span> - <span class="author">' + thisArticle.author + '</span></div> </div>');
+        console.log(thisArticle.title);
+        i++;
+      });
+    });
 }
 
 function getRedditFeed(subreddit, sort, count){

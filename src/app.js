@@ -44,9 +44,9 @@ $( document ).ready(function() {
     getTraffic(startLocation, destination, googleAPIKey, false, 0, 23);
     setInterval(function(){ getTraffic(startLocation, destination, googleAPIKey, false, 0, 23); }, 6000);
     
-    getCurrentWeather('Pittsburgh', 'imperial');
+    getCurrentWeather('Ewa Beach', 'imperial');
     setInterval(function(){ 
-      getCurrentWeather('Pittsburgh', 'imperial'); 
+      getCurrentWeather('Ewa Beach', 'imperial'); 
       //console.log('weather updated');
     }, 600000);
 
@@ -57,10 +57,10 @@ $( document ).ready(function() {
       //console.log('date updated');
     }, 1000);
     
-    //getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
+    getNewsFeed('techcrunch', '050ace9a6f81445a9e0f9d0ee68a7e0b');
     
-    getRedditFeed('news', 'hot', 5);
-    setInterval(function(){ getRedditFeed('news', 'hot', 5); }, 60000);
+    getRedditFeed('worldnews', 'hot', 5);
+    setInterval(function(){ getRedditFeed('worldnews', 'hot', 5); }, 60000);
 });
 
 function startTime() {

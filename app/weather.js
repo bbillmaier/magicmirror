@@ -39,3 +39,7 @@ function getCurrentWeather(city, units){
 		document.getElementById('weather-icon').innerHTML = '<i class="wi wi-owm-' + msg.weather[0].id + '"></i>';
     });
 }
+
+function getWeatherForecast(city, units){
+    // This function will get the 5 day forecast
+}
