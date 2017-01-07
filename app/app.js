@@ -111,57 +111,6 @@ function getCurrentWeather(city, units){
 
 
 
-function getTraffic(currentLocation, destination, googleAPIKey, message, startTime, endTime) {
-    
-    //Checking if this info is time related. For example if this is being used to get travel time to work in the morning.
-    if(!startTime){
-      startTime = 0;
-    }else{
-      startTime = startTime;
-    }
-
-    if(!endTime){
-      endTime = 23;
-    }else{
-      endTime = endTime;
-    }
-
-    var currentHour = (new Date()).getHours();
-    if (currentHour >= startTime && currentHour <= endTime){
-
-    if(!message){
-      message = 'Current travel time: ';
-    }else{
-      message = message;
-    }
-
-    //Adding + signs to location data. This will make it easier to put the address in initially.
-    
-    currentLocation = currentLocation.replace(" ", "+");
-    destination = destination.replace(" ", "+");
-
-
-    var trafficData = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+ currentLocation + '&destinations='+ destination + '&key=' + googleAPIKey;
-     var request = $.ajax({
-      url: trafficData,
-      method: "POST",
-      dataType: "JSON"
-    });
-
-
-    request.done(function( msg ) {
-      document.getElementById('travel-time').innerHTML = message + msg.rows[0].elements[0].duration.text;
-      
-      console.log('travel time updated');
-    });
-
-
-  }else{
-    //console.log('travel time from ' + currentLocation + ' to ' + destination + 'is not currently active');
-  }
-
-}
-
 function theDate(){
 	var today = new Date();
 	var dd = today.getDate();
