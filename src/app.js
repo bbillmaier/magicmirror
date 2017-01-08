@@ -19,7 +19,6 @@ var appDir = jetpack.cwd(app.getAppPath());
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('env-name').innerHTML = env.name;
     startTime();
-
 });
 
 $( document ).ready(function() {
