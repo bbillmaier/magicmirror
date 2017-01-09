@@ -1,11 +1,6 @@
 // Weather API key aa14eefdadb34bb7a3e2600bfdcb7af9
 // Example Call api.openweathermap.org/data/2.5/forecast?q=Pittsburgh,us&mode=xml&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9
 // http://openweathermap.org/current
-
-setInterval(function(){ 
-	getCurrentWeather('Pittsburgh', 'imperial'); 
-	console.log('weather updated');
-}, 600000);
     
 getCurrentWeather('Pittsburgh', 'imperial');
 
@@ -42,4 +37,17 @@ function getCurrentWeather(city, units){
 
 function getWeatherForecast(city, units){
     // This function will get the 5 day forecast
+}
+
+function getForecast(city, units){
+    var weatherForecast = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us&units='+units+'&APPID=aa14eefdadb34bb7a3e2600bfdcb7af9';
+     var request = $.ajax({
+      url: weatherForecast,
+      method: "POST",
+      dataType: "JSON"
+    });
+     
+    request.done(function( msg ) {
+      console.log( msg );
+    });
 }
